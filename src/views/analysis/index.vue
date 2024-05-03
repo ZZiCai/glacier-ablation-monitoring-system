@@ -1,56 +1,63 @@
 <template>
   <div class="app-container">
-    <el-row style="background: #fff;;padding:16px 16px 0;margin-bottom:32px;">
-      <LineChart :chart-data="lineChartData" />
-    </el-row>
+    <el-card>
+      <el-descriptions title="User Info">
+        <el-descriptions-item label="Username">kooriookami</el-descriptions-item>
+        <el-descriptions-item label="Telephone">18100000000</el-descriptions-item>
+        <el-descriptions-item label="Place">Suzhou</el-descriptions-item>
+        <el-descriptions-item label="Remarks">
+          <el-tag size="small">School</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="Address">
+          No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+        </el-descriptions-item>
+      </el-descriptions>
+    </el-card>
+    <LineChart class="wrapper" :chart-data="lineChartData" />
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column align="center" label="ID" width="95">
-        <template slot-scope="scope">
-          {{ scope.$index }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="wrapper">
+      <h2>其它冰川</h2>
+      <glacier-list :data="tableData" />
+    </div>
   </div>
 </template>
 
 <script>
-
 import { getList } from '@/api/table'
+import GlacierList from '@/components/GlacierList/index.vue'
 import LineChart from './components/LineChart'
+// import { ElDescriptions } from 'element-plus'
+
+const tableData = [
+  {
+    name: '玉龙雪山',
+    glacierID: 13245,
+    address: '云南省丽江市玉龙雪山',
+    longitude: 100.2383,
+    latitude: 27.1149
+  },
+  {
+    name: '玉龙雪山',
+    glacierID: 13245,
+    address: '云南省丽江市玉龙雪山',
+    longitude: 100.2383,
+    latitude: 27.1149
+  },
+  {
+    name: '玉龙雪山',
+    glacierID: 13245,
+    address: '云南省丽江市玉龙雪山',
+    longitude: 100.2383,
+    latitude: 27.1149
+  },
+  {
+    name: '玉龙雪山',
+    glacierID: 13245,
+    address: '云南省丽江市玉龙雪山',
+    longitude: 100.2383,
+    latitude: 27.1149
+  }
+]
 
 const lineChartData = {
   newVisitis: {
@@ -73,7 +80,8 @@ const lineChartData = {
 
 export default {
   components: {
-    LineChart
+    LineChart,
+    GlacierList
     // GithubCorner,
     // PanelGroup,
     // LineChart,
@@ -98,7 +106,8 @@ export default {
     return {
       list: null,
       listLoading: true,
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitis,
+      tableData: tableData
     }
   },
   created() {
@@ -115,3 +124,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.wrapper {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+</style>
