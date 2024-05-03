@@ -1,63 +1,55 @@
 <template>
   <div class="app-container">
-    <el-card>
-      <el-descriptions title="User Info">
-        <el-descriptions-item label="Username">kooriookami</el-descriptions-item>
-        <el-descriptions-item label="Telephone">18100000000</el-descriptions-item>
-        <el-descriptions-item label="Place">Suzhou</el-descriptions-item>
-        <el-descriptions-item label="Remarks">
-          <el-tag size="small">School</el-tag>
-        </el-descriptions-item>
-        <el-descriptions-item label="Address">
-          No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
-        </el-descriptions-item>
-      </el-descriptions>
+    <el-card class="info-card">
+      <h3>冰川信息</h3>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-space direction="horizonal">
+            <p>名称: {{ glacier.name }}</p>
+          </el-space>
+        </el-col>
+        <el-col :span="6">
+          <p>ID: {{ glacier.glacierID }}</p>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <p>位置: {{ glacier.address }}</p>
+        </el-col>
+        <el-col :span="3">
+          <p>经度: {{ glacier.longitude }}</p>
+        </el-col>
+        <el-col :span="3">
+          <p>纬度: {{ glacier.latitude }}</p>
+        </el-col>
+      </el-row>
     </el-card>
-    <LineChart class="wrapper" :chart-data="lineChartData" />
+    <line-chart class="wrapper" :chart-data="lineChartData" />
 
     <div class="wrapper">
       <h2>其它冰川</h2>
-      <glacier-list :data="tableData" />
+      <!-- <glacier-list :data="glaciers" /> -->
+      <el-table :data="glaciers" style="width: 100%" fit @row-click="handleRowClick">
+        <el-table-column fixed prop="name" label="名称" width="150" />
+
+        <el-table-column prop="glacierID" label="冰川ID" width="120" />
+        <el-table-column prop="address" label="地理位置" width="600" />
+        <el-table-column prop="longitude" label="经度" width="120" />
+        <el-table-column prop="latitude" label="纬度" width="120" />
+
+        <el-table-column fixed="right" label="查看详情" width="150">
+          <template #default>
+            <el-button type="primary" icon="el-icon-search" circle />
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
-import GlacierList from '@/components/GlacierList/index.vue'
+// import GlacierList from '@/components/GlacierList/index.vue'
 import LineChart from './components/LineChart'
-// import { ElDescriptions } from 'element-plus'
-
-const tableData = [
-  {
-    name: '玉龙雪山',
-    glacierID: 13245,
-    address: '云南省丽江市玉龙雪山',
-    longitude: 100.2383,
-    latitude: 27.1149
-  },
-  {
-    name: '玉龙雪山',
-    glacierID: 13245,
-    address: '云南省丽江市玉龙雪山',
-    longitude: 100.2383,
-    latitude: 27.1149
-  },
-  {
-    name: '玉龙雪山',
-    glacierID: 13245,
-    address: '云南省丽江市玉龙雪山',
-    longitude: 100.2383,
-    latitude: 27.1149
-  },
-  {
-    name: '玉龙雪山',
-    glacierID: 13245,
-    address: '云南省丽江市玉龙雪山',
-    longitude: 100.2383,
-    latitude: 27.1149
-  }
-]
 
 const lineChartData = {
   newVisitis: {
@@ -80,46 +72,35 @@ const lineChartData = {
 
 export default {
   components: {
-    LineChart,
-    GlacierList
-    // GithubCorner,
-    // PanelGroup,
-    // LineChart,
-    // RaddarChart,
+    LineChart
+    // GlacierList
+
     // PieChart,
     // BarChart,
     // TransactionTable,
     // TodoList,
     // BoxCard
   },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
+      glacier: {},
       list: null,
       listLoading: true,
       lineChartData: lineChartData.newVisitis,
-      tableData: tableData
+      glaciers: []
     }
   },
   created() {
-    this.fetchData()
+    this.glaciers = this.$store.getters.glaciers
+    this.glacier = this.$store.getters.glacier
+    // TODO 拉取冰川数据
   },
   methods: {
-    fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+    handleRowClick(row) {
+      console.log(row)
+      this.$store.dispatch('glaciers/updateGlacier', row)
+      this.glacier = row
+      // TODO 拉取冰川数据
     }
   }
 }
@@ -129,5 +110,10 @@ export default {
 .wrapper {
   padding: 16px;
   margin-bottom: 16px;
+}
+
+.info-card {
+  padding: 8px;
+  margin-bottom: 30px;
 }
 </style>

@@ -43,10 +43,20 @@ export default {
   methods: {
     getUser() {
       this.user = {
-        name: 'zzc',
+        name: 'zcZhou',
         role: 'admin',
         email: 'admin@test.com',
-        avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
+        avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        institutions: [
+          {
+            id: 1,
+            name: '同济大学'
+          },
+          {
+            id: 2,
+            name: '海洋研究院'
+          }
+        ]
       }
     }
   }

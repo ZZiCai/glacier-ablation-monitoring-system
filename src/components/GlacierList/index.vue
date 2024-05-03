@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="data" style="width: 100%" fit>
+  <el-table :data="data" style="width: 100%" fit @row-click="handleRowClick">
     <el-table-column fixed prop="name" label="名称" width="150" />
 
     <el-table-column prop="glacierID" label="冰川ID" width="120" />
@@ -16,12 +16,18 @@
 </template>
 
 <script>
-
 export default {
   props: {
     data: {
       type: Array,
       default: () => []
+    }
+  },
+  methods: {
+    handleRowClick(row) {
+      console.log(row)
+      this.$store.dispatch('glaciers/updateGlacier', row)
+      this.$router.push({ name: 'Analysis' })
     }
   }
 }

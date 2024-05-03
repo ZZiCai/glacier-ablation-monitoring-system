@@ -3,10 +3,10 @@
     <el-card>
       <el-tabs v-model="activeTab">
         <!-- 冰川数据 -->
-        <el-tab-pane label="上传数据" name="glacier">
-          <h2>上传冰川数据</h2>
-          <el-form ref="form" :model="form" label-width="120px">
+        <el-tab-pane label="单条数据录入" name="glacier">
+          <h3>上传冰川数据</h3>
 
+          <el-form ref="form" :model="form" label-width="120px">
             <el-form-item label="冰川ID">
               <el-input-number v-model="form.glacierID" :min="0" :max="999999" :controls="false" />
             </el-form-item>
@@ -36,12 +36,29 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">Create</el-button>
-              <el-button @click="onCancel">Cancel</el-button>
+              <el-button type="primary" @click="onSubmit">提交</el-button>
+              <el-button @click="onCancel">取消</el-button>
             </el-form-item>
           </el-form>
+
         </el-tab-pane>
 
+        <el-tab-pane label="文件录入" name="upload">
+          <h3>上传冰川数据</h3>
+          <el-upload class="upload-demo" drag action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" limit="1">
+            <!-- <el-icon class="el-icon--upload"><upload-filled /></el-icon> -->
+            <i class="el-icon-upload" />
+            <div class="el-upload__text">
+              Drop file here or <em>click to upload</em>
+            </div>
+            <template #tip>
+              <div class="el-upload__tip">
+                json file with a size less than 10MB
+              </div>
+            </template>
+          </el-upload>
+
+        </el-tab-pane>
         <!-- 审核数据 -->
         <el-tab-pane label="审核数据" name="audit">
           <h2>审核上传数据</h2>
