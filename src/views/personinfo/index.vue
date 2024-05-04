@@ -9,33 +9,57 @@
 
         <el-col :span="18" :xs="24">
           <el-card>
-            <account :user="user" />
+            <el-tabs v-model="activeTab">
+              <el-tab-pane label="申请加入机构" name="apply">
+                <apply />
+              </el-tab-pane>
+              <el-tab-pane label="审核通过" name="audit">
+                <audit :data="tableData" />
+              </el-tab-pane>
+            </el-tabs>
           </el-card>
         </el-col>
-
       </el-row>
     </div>
   </div>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
 import UserCard from './components/UserCard'
-import Account from './components/Account'
+import Apply from './components/Apply.vue'
+import Audit from './components/Audit.vue'
+const tableData = [
+  {
+    userName: 'zzh',
+    userID: 2152432,
+    institutionName: '同济大学',
+    institutionID: 10,
+    reason: '想加入同济大学'
+  },
+  {
+    userName: 'hjh',
+    userID: 2153067,
+    institutionName: '同济大学',
+    institutionID: 10,
+    reason: '我是同济大学的学生'
+  },
+  {
+    userName: 'yyz',
+    userID: 2152413,
+    institutionName: '同济大学',
+    institutionID: 10,
+    reason: '我对冰川消融信息感兴趣'
+  }
+]
 
 export default {
-  components: { UserCard, Account },
+  components: { UserCard, Apply, Audit },
   data() {
     return {
-      user: {}
+      user: {},
+      activeTab: 'apply',
+      tableData: tableData
     }
-  },
-  computed: {
-    // ...mapGetters([
-    //   'name',
-    //   'avatar',
-    //   'roles'
-    // ])
   },
   created() {
     this.getUser()

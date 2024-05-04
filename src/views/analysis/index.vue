@@ -1,31 +1,43 @@
 <template>
   <div class="app-container">
-    <el-card class="info-card">
-      <h3>冰川信息</h3>
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <el-space direction="horizonal">
-            <p>名称: {{ glacier.name }}</p>
-          </el-space>
-        </el-col>
-        <el-col :span="6">
-          <p>ID: {{ glacier.glacierID }}</p>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <p>位置: {{ glacier.address }}</p>
-        </el-col>
-        <el-col :span="3">
-          <p>经度: {{ glacier.longitude }}</p>
-        </el-col>
-        <el-col :span="3">
-          <p>纬度: {{ glacier.latitude }}</p>
-        </el-col>
-      </el-row>
-    </el-card>
-    <line-chart class="wrapper" :chart-data="lineChartData" />
+    <div class="container">
+      <el-card class="info-card">
+        <h3>冰川信息</h3>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <div direction="horizonal">
+              <p>名称: {{ glacier.name }}</p>
+            </div>
+          </el-col>
+          <el-col :span="6">
+            <p>ID: {{ glacier.glacierID }}</p>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <p>位置: {{ glacier.address }}</p>
+          </el-col>
+          <el-col :span="6">
+            <p>经度: {{ glacier.longitude }}</p>
+          </el-col>
+          <el-col :span="6">
+            <p>纬度: {{ glacier.latitude }}</p>
+          </el-col>
+        </el-row>
+      </el-card>
 
+      <el-card class="melt-card">
+        <melt-info :status="glacier.meltStatus" />
+      </el-card>
+    </div>
+    <div class="wrapper">
+      <h3 class="h3">面积 km²</h3>
+      <line-chart :chart-data="lineChartData" :theme="'infographic'" />
+      <h3 class="h3">温度 ℃</h3>
+      <line-chart :chart-data="lineChartData2" :theme="'macarons'" />
+      <!-- <h3 class="h3">盐度</h3>
+      <line-chart :chart-data="lineChartData" :theme="'inspired'" /> -->
+    </div>
     <div class="wrapper">
       <h2>其它冰川</h2>
       <!-- <glacier-list :data="glaciers" /> -->
@@ -50,31 +62,24 @@
 <script>
 // import GlacierList from '@/components/GlacierList/index.vue'
 import LineChart from './components/LineChart'
+import MeltInfo from './components/MeltInfo'
 
 const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
+  expectedData: [20, 20.11, 20.12, 20.14, 20.10, 20.07, 20.14],
+  actualData: [20, 20.05, 20.05, 20.10, 20.15, 20.11, 20.10],
+  xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
+}
+
+const lineChartData2 = {
+  actualData: [0.1, 0, 0.2, 0.3, 0.4, 0.3, 0.5],
+  xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
 }
 
 export default {
   components: {
-    LineChart
+    LineChart,
+    MeltInfo
     // GlacierList
-
     // PieChart,
     // BarChart,
     // TransactionTable,
@@ -86,7 +91,8 @@ export default {
       glacier: {},
       list: null,
       listLoading: true,
-      lineChartData: lineChartData.newVisitis,
+      lineChartData: lineChartData,
+      lineChartData2: lineChartData2,
       glaciers: []
     }
   },
@@ -97,7 +103,7 @@ export default {
   },
   methods: {
     handleRowClick(row) {
-      console.log(row)
+      // console.log(row)
       this.$store.dispatch('glaciers/updateGlacier', row)
       this.glacier = row
       // TODO 拉取冰川数据
@@ -110,10 +116,27 @@ export default {
 .wrapper {
   padding: 16px;
   margin-bottom: 16px;
+  .h3 {
+    margin-left: 5px;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  /* 或者使用 flex-end 对齐右边 */
 }
 
 .info-card {
   padding: 8px;
   margin-bottom: 30px;
+  width: 50%;
+}
+
+.melt-card {
+  padding: 8px;
+  margin-bottom: 30px;
+  margin-right: 5%;
+  width: 40%;
 }
 </style>

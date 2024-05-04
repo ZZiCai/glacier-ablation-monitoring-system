@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     handleRowClick(row) {
-      console.log(row)
+      // console.log(row)
       this.$store.dispatch('glaciers/updateGlacier', row)
       this.$router.push({ name: 'Analysis' })
     }

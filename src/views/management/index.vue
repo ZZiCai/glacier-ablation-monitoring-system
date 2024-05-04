@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card>
       <el-tabs v-model="activeTab">
-        <!-- 冰川数据 -->
+        <!-- 单条数据录入 -->
         <el-tab-pane label="单条数据录入" name="glacier">
           <h3>上传冰川数据</h3>
 
@@ -42,11 +42,10 @@
           </el-form>
 
         </el-tab-pane>
-
+        <!-- 文件录入 -->
         <el-tab-pane label="文件录入" name="upload">
           <h3>上传冰川数据</h3>
-          <el-upload class="upload-demo" drag action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" limit="1">
-            <!-- <el-icon class="el-icon--upload"><upload-filled /></el-icon> -->
+          <el-upload class="upload-demo" drag action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" :limit="1">
             <i class="el-icon-upload" />
             <div class="el-upload__text">
               Drop file here or <em>click to upload</em>
@@ -61,7 +60,12 @@
         </el-tab-pane>
         <!-- 审核数据 -->
         <el-tab-pane label="审核数据" name="audit">
-          <h2>审核上传数据</h2>
+          <div class="container">
+            <h2>审核上传数据</h2>
+            <div class="button">
+              <el-button type="success"> 一键审核 </el-button>
+            </div>
+          </div>
           <el-table :data="tableData" style="width: 100%">
             <el-table-column fixed prop="name" label="名称" width="150" />
             <el-table-column prop="obsTime" label="观测时间" width="120" />
@@ -73,7 +77,7 @@
             <el-table-column fixed="right" label="审核操作" width="150">
               <template #default>
                 <el-button type="success" icon="el-icon-check" circle />
-                <el-button type="danger" icon="el-icon-delete" circle />
+                <el-button type="danger" icon="el-icon-close" circle />
               </template>
             </el-table-column>
           </el-table>
@@ -152,5 +156,14 @@ export default {
 <style scoped>
 .line {
   text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+
+  .button {
+    margin-right: 50px;
+  }
 }
 </style>

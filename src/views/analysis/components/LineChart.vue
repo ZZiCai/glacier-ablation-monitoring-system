@@ -3,9 +3,10 @@
 </template>
 
 <script>
-// import echarts from 'echarts'
 import * as echarts from 'echarts'
+require('echarts/theme/infographic') // echarts theme
 require('echarts/theme/macarons') // echarts theme
+require('echarts/theme/inspired') // echarts theme
 import resize from './mixins/resize'
 
 export default {
@@ -30,6 +31,10 @@ export default {
     chartData: {
       type: Object,
       required: true
+    },
+    theme: {
+      type: String,
+      default: 'infographic'
     }
   },
   data() {
@@ -59,13 +64,16 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+      this.chart = echarts.init(this.$el, this.theme)
       this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions(chartData = { }) {
+      const { expectedData, actualData, xData } = chartData
+      console.log(xData)
+      // { expectedData, actualData, xData } = {}
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: xData,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -89,47 +97,41 @@ export default {
           axisTick: {
             show: false
           }
-        },
-        legend: {
-          data: ['expected', 'actual']
-        },
-        series: [{
-          name: 'expected', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
-                color: '#FF005A',
-                width: 2
-              }
-            }
-          },
-          smooth: true,
-          type: 'line',
-          data: expectedData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
-        {
-          name: 'actual',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
-                color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
-              }
-            }
-          },
-          data: actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
-        }]
+        }
       })
+
+      if (expectedData && actualData && xData) {
+        this.chart.setOption({
+          legend: {
+            data: ['expected', 'actual']
+          },
+          series: [{
+            name: 'expected',
+            smooth: true,
+            type: 'line',
+            data: expectedData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          },
+          {
+            name: 'actual',
+            smooth: true,
+            type: 'line',
+            data: actualData,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
+          }]
+        })
+      } else {
+        this.chart.setOption({
+          series: [{
+            type: 'line',
+            data: actualData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          }]
+        })
+      }
     }
   }
 }
