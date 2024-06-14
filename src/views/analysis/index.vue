@@ -64,14 +64,14 @@
 import LineChart from './components/LineChart'
 import MeltInfo from './components/MeltInfo'
 
-const lineChartData = {
-  expectedData: [20, 20.11, 20.12, 20.14, 20.10, 20.07, 20.14],
-  actualData: [20, 20.05, 20.05, 20.10, 20.15, 20.11, 20.10],
-  xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
+var lineChartData = {
+  expectedData: [960.1, 959.5, 959.7, 959.3, 959.6, 959.7, 960.1, 960.5, 960.7],
+  actualData: [960.1, 959.5, 959.7, 959.3, 959.6, 959.7],
+  xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026']
 }
 
-const lineChartData2 = {
-  actualData: [0.1, 0, 0.2, 0.3, 0.4, 0.3, 0.5],
+var lineChartData2 = {
+  actualData: [0.1, 0, 0.2, 0.3, 0.4, 0.3, 0.35],
   xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
 }
 
@@ -100,6 +100,7 @@ export default {
     this.glaciers = this.$store.getters.glaciers
     this.glacier = this.$store.getters.glacier
     // TODO 拉取冰川数据
+    this.syncData()
   },
   methods: {
     handleRowClick(row) {
@@ -107,6 +108,55 @@ export default {
       this.$store.dispatch('glaciers/updateGlacier', row)
       this.glacier = row
       // TODO 拉取冰川数据
+        this.syncData()
+      
+    }, 
+    syncData(){
+        if (this.glacier.name == '冰山1') {
+        this.lineChartData = {
+            expectedData: [20.1, 20.0999, 20.098, 20.097, 20.092, 20.091, 20.09, 20.089, 20.088],
+            actualData: [20.1, 20.0999, 20.098, 20.097, 20.092, 20.091],
+            xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026']
+        }
+        this.lineChartData2 = {
+            actualData: [0.1, 0.3, 0.25, 0.28, 0.22, 0.30, 0.31],
+            xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
+            }
+      }
+      else if (this.glacier.name == '冰山2') {
+        this.lineChartData = {
+            expectedData: [42.1, 42.097, 42.085, 42.080, 42.077, 42.064, 42.061, 42.059, 42.057],
+            actualData: [42.1, 42.097, 42.085, 42.080, 42.077, 42.064],
+            xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026']
+        }
+        this.lineChartData2 = {
+            actualData: [0.2, 0.28, 0.30, 0.30, 0.33, 0.33, 0.37],
+            xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
+            }
+      }
+      else if (this.glacier.name == '冰山3') {
+        this.lineChartData = {
+            expectedData: [33.1,32.977, 32.90, 32.82, 32.74, 32.66, 32.42, 32.21, 32.11],
+            actualData: [33.1, 32.977, 32.90, 32.82, 32.74, 32.66],
+            xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026']
+        }
+        this.lineChartData2 = {
+            actualData: [0.2, 0.28, 0.34, 0.32, 0.36, 0.4, 0.39],
+            xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
+            }
+      }
+      else if (this.glacier.name == '玉龙雪山'){
+        this.lineChartData = {
+            expectedData: [960.1, 959.5, 959.7, 959.3, 959.6, 959.7, 960.1, 960.5, 960.7],
+            actualData: [960.1, 959.5, 959.7, 959.3, 959.6, 959.7],
+            xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026']
+            }
+
+            this.lineChartData2 = {
+            actualData: [0.1, 0, 0.2, 0.3, 0.4, 0.3, 0.35],
+            xData: ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
+            }
+      }
     }
   }
 }

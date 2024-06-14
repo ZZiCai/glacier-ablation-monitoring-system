@@ -64,8 +64,8 @@ export default {
         })
       } else {
         this.$message({
-          message: '提交成功！',
-          type: 'success'
+          message: '你已经是机构管理员',
+          type: 'warning'
         })
       }
       this.clearForm()

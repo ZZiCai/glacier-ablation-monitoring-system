@@ -63,7 +63,7 @@
           <div class="container">
             <h2>审核上传数据</h2>
             <div class="button">
-              <el-button type="success"> 一键审核 </el-button>
+              <el-button type="success" @click="acceptALL()"> 一键审核 </el-button>
             </div>
           </div>
           <el-table :data="tableData" style="width: 100%">
@@ -75,9 +75,9 @@
             <el-table-column prop="area" label="面积" width="600" />
 
             <el-table-column fixed="right" label="审核操作" width="150">
-              <template #default>
-                <el-button type="success" icon="el-icon-check" circle />
-                <el-button type="danger" icon="el-icon-close" circle />
+              <template #default="scope">
+                <el-button type="success" icon="el-icon-check" circle @click="approveRow(scope.row)"/>
+                <el-button type="danger" icon="el-icon-close" circle @click="rejectRow(scope.row)"/>
               </template>
             </el-table-column>
           </el-table>
@@ -139,15 +139,50 @@ export default {
     }
   },
   methods: {
+    clearForm() {
+      this.form = {
+        glacierID: 0,
+        institutionID: 0,
+        temperature: 0.00,
+        salinity: 0.00,
+        area: 0.00,
+        obsTime: ''
+      }
+    },
     onSubmit() {
-      var data = 'submit!' + JSON.stringify(this.form)
-      this.$message(data)
+      this.$message({
+        message: '提交成功!',
+        type: 'success'
+      })
+      this.clearForm()
     },
     onCancel() {
       this.$message({
-        message: 'cancel!',
-        type: 'warning'
+        message: '取消成功!',
+        type: 'info'
       })
+      this.clearForm()
+    },
+    approveRow(row) {
+        this.$message({
+            message: '审核通过!',
+            type: 'success'
+        })
+        this.tableData = this.tableData.filter(item => item !== row)
+    },
+    rejectRow(row) {
+        this.$message({
+            message: '审核未通过!',
+            type: 'warning'
+        })
+        this.tableData = this.tableData.filter(item => item !== row)
+    },
+    acceptALL() {
+      this.$message({
+        message: '审核通过!',
+        type: 'success'
+      })
+      this.tableData = []
     }
   }
 }

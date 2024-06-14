@@ -94,6 +94,8 @@ export default {
           padding: [5, 10]
         },
         yAxis: {
+          min: 'dataMin',
+          max: 'dataMax',
           axisTick: {
             show: false
           }

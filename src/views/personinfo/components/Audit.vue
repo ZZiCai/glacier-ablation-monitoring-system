@@ -9,9 +9,9 @@
       <el-table-column prop="reason" label="申请理由" width="240" />
 
       <el-table-column fixed="right" label="审核操作" width="150">
-        <template #default>
-          <el-button type="success" icon="el-icon-check" circle />
-          <el-button type="danger" icon="el-icon-close" circle />
+        <template #default="scope">
+          <el-button type="success" icon="el-icon-check" circle @click="approveRow(scope.row)"/>
+          <el-button type="danger" icon="el-icon-close" circle @click="rejectRow(scope.row)"/>
         </template>
       </el-table-column>
     </el-table>
@@ -26,6 +26,22 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  methods: {
+    approveRow(row) {
+        this.$message({
+            message: '审核通过!',
+            type: 'success'
+        })
+        this.data = this.data.filter(item => item !== row)
+    },
+    rejectRow(row) {
+        this.$message({
+            message: '审核未通过!',
+            type: 'warning'
+        })
+        this.data = this.data.filter(item => item !== row)
+    },
   }
 }
 </script>
